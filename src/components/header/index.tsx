@@ -18,6 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { Card, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { AutoComplete } from 'material-ui';
 
 const drawerWidth = 240;
 
@@ -78,7 +79,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: 0,
-      marginTop:60
+      marginTop: 80
     },
     contentShift: {
       transition: theme.transitions.create('margin', {
@@ -88,10 +89,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginLeft: drawerWidth,
       marginTop: 60
     },
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
   }),
 );
 
@@ -99,7 +96,6 @@ export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [isInstitutionEmpty, setInstitutionEmpty] = React.useState('');
 
   const handleDrawerOpen = () => {
     setOpen(true);

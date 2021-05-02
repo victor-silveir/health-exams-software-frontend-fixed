@@ -1,17 +1,20 @@
-import { Container, Grid } from '@material-ui/core'
+import { Container, Divider, Grid } from '@material-ui/core'
 import {useStyles} from '../header/index'
-import clsx from 'clsx';
 import { ExamsTable } from '../table';
+import InstitutionCard from '../insitution-card';
+import React from 'react';
 
 export default function Content() {
-
+    const[institutionValue, setInstitutionValue] = React.useState('');
     const classes = useStyles()
 
     return(
-        <Container className={clsx(classes.content && classes.contentShift)}>
-        <h1>Content works</h1>
-        <Grid xs={12}>
-        <ExamsTable />
+        
+        <Container className={classes.content}>
+        <InstitutionCard setInstitution={setInstitutionValue}/>
+        <Divider />
+        <Grid>
+        {institutionValue !== '' ? <ExamsTable/> : <div>ops</div>}
         </Grid>
         </Container>
     ) 
