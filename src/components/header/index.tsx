@@ -17,6 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { Card, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -30,7 +31,7 @@ const institutions = [
 
 ]
 
-const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
@@ -94,10 +95,11 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function Header() {
+export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [isInstitutionEmpty, setInstitutionEmpty] = React.useState('');
 
   const handleDrawerOpen = () => {
     setOpen(true);
