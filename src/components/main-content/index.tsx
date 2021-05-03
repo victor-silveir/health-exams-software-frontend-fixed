@@ -2,6 +2,7 @@ import { Container, createStyles, Divider, Grid, makeStyles, Theme } from '@mate
 import { ExamsTable } from '../table';
 import InstitutionCard from '../insitution-card';
 import React from 'react';
+import NewExamForm from '../new-exam-form';
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,6 +31,7 @@ export default function Content() {
         <Grid>
         {institutionValue !== '' ? <ExamsTable/> : <div>ops</div>}
         </Grid>
+        <NewExamForm />
         </Container>
     ) 
 };
