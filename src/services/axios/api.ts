@@ -3,17 +3,26 @@ import useSWR from 'swr'
 
 export const api = axios.create({
     baseURL: ' http://localhost:8080/',
-    headers: { 'Access-Control-Allow-Origin': '*' }
 });
 
-export function GetAll<Data = any>(url: string) {
-    const { data, error } = useSWR<Data>(url, async url => {
+export async function GetAll<Data = any>(url: string) {
         const response = await api.get(`${url}`)
 
         const data = response.data;
 
         return data;
-    }, { revalidateOnFocus: true });
+};
+
+export function GetAllExams<Data = any>(url: any, values: any) {
+    const { data, error } = useSWR<Data>(url, async url => {
+        const response = await api.get(`${url}`, {params: {
+            healthcareinstitution: values
+        }})
+        
+        const data = response.data;
+
+        return data;
+    }, { revalidateOnFocus: true, revalidateOnMount: true }  );
     return { data, error };
 };
 

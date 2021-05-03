@@ -1,6 +1,6 @@
 import { Button, Card, createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, Typography, Theme, Grid, Box, Divider } from "@material-ui/core";
 import React, { Dispatch, SetStateAction } from "react";
-import { GetAll } from "../../services/axios/api";
+import { api, GetAll } from "../../services/axios/api";
 import NewInstitutionForm from "../new-institution-form";
 
 const institutions = [
@@ -43,13 +43,28 @@ type CardProps = {
 
 export default function InstitutionCard(props: CardProps) {
     const [isInstitutionEmpty, setInstitutionEmpty] = React.useState('');
+    const [data, setData] = React.useState<HealthcareInstitution[]>([]);
+    const [singleData, setSingleData] = React.useState<HealthcareInstitution>({} as HealthcareInstitution)
+    api.get('healthcareinstitutions').then((response) => {
+        setData(response.data);
+    });
+
+    React.useEffect(() => {
+        api.get(`healthcareinstitutions/${isInstitutionEmpty}`).then((response) => {
+            setSingleData(response.data);
+        });
+    }, [isInstitutionEmpty]);
+
     const [openForm, setOpenForm] = React.useState(false);
-    const {data} = GetAll<HealthcareInstitution[]>('healthcareinstitutions');
-    const {data: singledata} = GetAll<HealthcareInstitution>(`healthcareinstitutions/${isInstitutionEmpty}`)
+    
     const classes = useStyles();
 
-    if(!data || !singledata) {
+    if(!data ) {
         return(<></>);
+    }
+
+    if(!singleData) {
+        return(<></>)
     }
 
     const handleOpenForm = () => {
@@ -68,8 +83,8 @@ export default function InstitutionCard(props: CardProps) {
                 <InputLabel id="institution">Institution</InputLabel>
                 <Select id="institution" className={classes.institutionSelect} value={isInstitutionEmpty} label="Institution" onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                     const selectValue = event.target.value
-                    setInstitutionEmpty(selectValue as string);
                     props.setInstitution(selectValue as string);
+                    setInstitutionEmpty(selectValue as string);
 
                 }}>
                     <MenuItem value={''}><em>...</em></MenuItem>
@@ -95,15 +110,15 @@ export default function InstitutionCard(props: CardProps) {
         <Grid item xs={12} sm={7} container direction="row" alignItems="center" spacing={1}>
             <Grid container direction="column" item xs={12} sm={6}>
                 <Typography variant="h5">
-                    Institution: <span>{singledata.name}</span>
+                    Institution: <span>{singleData.name}</span>
                 </Typography>
                 <Typography>
-                    CNPJ: <span>{singledata.cnpj}</span>
+                    CNPJ: <span>{singleData.cnpj}</span>
                 </Typography>
             </Grid>
             <Grid container direction="row" item xs={12} sm={6}>
                 <Typography>
-                    Pixeon Coins: <span>{singledata.pixeonCoins}</span>
+                    Pixeon Coins: <span>{singleData.pixeonCoins}</span>
                 </Typography>
             </Grid>
         </Grid> : <></>
