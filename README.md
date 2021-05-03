@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+## Descrição do projeto:
+ 
+Interface da aplicação exams-software, uma aplicação para realizar cadastro, deleção e atualização de exames e instituições de saúde, seguindo regras de negócios próprias. O design desse projeto foi desenvolvido por mim utilizando como referência os exemplos do material-ui.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sumário
+=================
+<!--ts-->
+   * [Descrição do Projeto](#descrição-do-projeto)
+   * [Sumário](#sumário)
+    * [Tecnologias utilizadas](#Tecnologias-utilizadas)
+   * [Como instalar e rodar o projeto](#Como-instalar-e-rodar-o-projeto)
+      * [Pré Requisitos](#pré-requisitos)
+      * [Build do Projeto](#build-do-projeto)
+* [Uso e Endpoints Liberados](#uso-e-endpoints-liberados)
+        
+* [Considerações Finais](#considerações-finais)
+<!--te-->
 
-## Available Scripts
 
-In the project directory, you can run:
+## Estrutura do projeto
+```
+.
+├── src/
+|   ├── components/                
+|   |   ├── header/
+|   |   ├── institution-card/
+|   |   ├── main-content/
+|   |   ├── new-exam-form/
+|   |   ├── new-institution-form/
+|   |   ├── table/
+|   |   ├── update-exam-form/
+|   |   └── update-customer-form
+|   |   
+|   ├── models/                       
+|   |   └── ...
+|   ├── services/                      
+|     ├── axios/
+|     |    └── ...      
+|     └── validation/
+|          └── ...                        
+├── pages/ 
+|   └── App.tsx
+├── public/
+|   └── img/
+|        └── ...
+|
+└── ...
+```
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Tecnologias utilizadas: 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+* TypeScript - JavaScript tipado.
 
-### `yarn test`
+* React - Biblioteca JavaScript criada pelo o facebook para criação de interfaces de usuários.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Axios - Cliente Http baseado em promises para fazer requisições.
 
-### `yarn build`
+* React hook form - Biblioteca para lidar com formulários em React.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Yup - Biblioteca para validações em React.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* MaterialUi - Biblioteca JavaScript criada pelo o Google para criação de interfaces de usuários.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+# Como instalar e rodar o projeto: 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Pré Requisitos:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Para poder rodar o projeto na sua máquina é necessário ter instalado [NodeJs](https://nodejs.org/en/).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Build do projeto:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Após baixar o projeto, abra o terminal de comando na raíz do projeto e execute o seguinte comando:
 
-## Learn More
+```sh
+npm install
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Este comando irá instalar os módulos para que o node possa rodar o projeto. Após isso execute o seguinte comando:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```sh
+yarn start
+```
+Após subir a aplicação, acesse http://localhost:3000 para poder utilizá-la.
 
-### Code Splitting
+# Experiências e dificuldades
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* Essa foi minha segunda aplicação React, a primeira que eu desenvolvi além de utilizar o react utilizei também o next.js, e, após trabalhar neste projeto percebo que o next facilita muitas coisas, decidi utilizar o material-ui, que eu nunca tinha utilizado, fiquei espantado com o poder dele e quero estudar mais sobre o mesmo.
+*Tive bastante dificuldades por conta do tempo e por ter utilizado coisas novas o que demanda mais tempo de estudo, o projeto está incompleto, tentei fazer o máximo que consegui, porém planejo finalizá-lo.
+*Achei que seria mais simples desenvolver o projeto em apenas uma página, por ser uma aplicação mais simples que não demanda muitas requisições achei que seria melhor porém enfrentei novos desafios pois, já que não tinha várias páginas eu tinha que ter um controle maior das minhas variáveis e tive que passar muito mais props de um componente para o outro, inclusive meu maior aprendizado: passar propriedades de um componente filho para o componente pai.
+*Tenho umas ideias de animação e design legais que não pude implementar pois não consegui finalizar o projeto.
+*Tentei usar o swr para ter uma experiência mais agradável para o usuário, podendo usar o "mutate" mostrando sem dar reload na página a quantidade de moedas cobradas, podendo usar animações e deixando a aplicação muito mais fluida, porém tive diversos erros que apenas consertei utilizando o axios normalmente.
+*Apesar de consertar as minhas requisições continuam dando problema e se encontram em loop, e quando eu uso um useEffect ou useCallback elas param de buscar dados, o primeiro passo para melhorar essa aplicação é trabalhar a integração com o backend.
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Considerações Finais
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* Foi utilizado para mostrar notificações para o usuário a função alert, do próprio JavaScript, o próximo passo seria a criação de uma biblioteca de "Toasts" para realizar essas notificações de sucesso e erro.
+* Uma maneira de deixa a aplicação mais viável seria criar novas páginas, assim temos menos requisições no backend na mesma página.

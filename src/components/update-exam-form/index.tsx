@@ -4,7 +4,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { api } from "../../services/axios/api";
 import { ExamSchema } from "../../services/validation/YupSchemas";
-import { UpdateExamType, PostExamType } from "../models/ExamsTypes"
+import { UpdateExamType, PostExamType } from "../../models/ExamsTypes"
 
 
 

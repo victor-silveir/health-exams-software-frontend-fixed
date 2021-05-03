@@ -6,7 +6,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import { api } from '../../services/axios/api';
 import UpdateExamForm from '../update-exam-form/index'
-import { GetExamdataByInstitutionType, GetExamdataType, PostExamType } from '../models/ExamsTypes';
+import { GetExamdataByInstitutionType, GetExamdataType, PostExamType } from '../../models/ExamsTypes';
 
 type propsData = {
   key: number,
