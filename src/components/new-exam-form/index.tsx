@@ -1,5 +1,6 @@
 import { Box, Button, createStyles, Grid, makeStyles, MenuItem, TextField, Theme, Typography } from "@material-ui/core";
 import React from "react";
+import { Controller, useForm } from "react-hook-form";
 
 const institutions = [
     { name: 'Hemocentro', cnpj: '123456' },
@@ -25,67 +26,139 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 }),
 );
 
+const inicialValues = {
+    procedureName: '',
+    patientName: '',
+    patientAge: 0,
+    patientGender: '',
+    physicianName: '',
+    physicianCRM: '',
+    healthcareInstitutionId: ''
+}
+
 export default function NewExamForm() {
 
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: inicialValues
+    });
     const [institutionValue, setInstitutionValue] = React.useState('');
     const classes = useStyles();
 
     return (
-        <form>
+        <form onSubmit={handleSubmit((values) => console.log(values))}>
             <Box width="100%">
                 <Typography variant="h6" className={classes.typographSpace}>Procedure Name:</Typography>
-                <TextField className={classes.inputSpace} helperText="Procedure name" id="ProcedureName" name="procedureName" label="Procedure Name*: " variant="outlined" />
+                <Controller
+                    name="procedureName"
+                    control={control}
+                    render={({field}) => <TextField
+                        className={classes.inputSpace}
+                        helperText="Procedure name"
+                        id="ProcedureName"
+                        label="Procedure Name*: "
+                        variant="outlined"
+                        {...field} />}
+                />
+                
                 <Typography variant="h6" className={classes.typographSpace}>Patient:</Typography>
                 <Grid container>
-                    <TextField className={classes.inputSpace} helperText="Patient's name" id="PatientName" name="patientName" label="Name*: " variant="outlined" />
-                    <TextField className={classes.inputSpace} helperText="Patient's age" id="PatientAge" name="patientAge" label="Age*: " variant="outlined" />
+                <Controller
+                        name="patientName"
+                        control={control}
+                    render={({field}) =>
+                    <TextField
+                        className={classes.inputSpace}
+                        helperText="Patient's name"
+                        id="PatientName"
+                        label="Name*: "
+                        variant="outlined" 
+                        {...field}
+                        />}
+                        />
+                    <Controller
+                        name="patientAge"
+                        control={control}
+                    render={({field}) =>
+                    <TextField
+                        className={classes.inputSpace}
+                        helperText="Patient's age"
+                        id="PatientAge"
+                        label="Age*: "
+                        variant="outlined" 
+                        {...field}/>}
+                        />
+                    <Controller
+                        name="patientGender"
+                        control={control}
+                    render={({field}) =>
                     <TextField
                         className={classes.inputSpace}
                         select
                         type="select"
                         helperText="Patient's Gender"
                         id="PatientGender"
-                        name="patientGender"
                         label="Gender*: "
                         variant="outlined"
-                        value={institutionValue}
-                    >
-                        <MenuItem value={''}><em>...</em></MenuItem>
+                        {...field}>
+                        <MenuItem value={0}><em>...</em></MenuItem>
                         <MenuItem value={1}>Male</MenuItem>
                         <MenuItem value={2}>Female</MenuItem>
-                    </TextField>
+                    </TextField>}
+                    />
                 </Grid>
                 <Typography variant="h6" className={classes.typographSpace}>Physician: </Typography>
                 <Grid container>
-                    <TextField className={classes.inputSpace} helperText="Physician's name" id="PhysicianName" name="physicianName" label="Physician Name*: " variant="outlined" />
-                    <TextField className={classes.inputSpace} helperText="Physician's CRM" id="PhysicianCRM" name="physicianCRM" label="Physician CRM*: " variant="outlined" />
+                <Controller
+                        name="physicianName"
+                        control={control}
+                    render={({field}) =>
+                    <TextField
+                        className={classes.inputSpace}
+                        helperText="Physician's name"
+                        id="PhysicianName"
+                        label="Physician Name*: "
+                        variant="outlined" 
+                        {...field}/>}
+                        />
+                        <Controller
+                        name="physicianCRM"
+                        control={control}
+                    render={({field}) =>
+                    <TextField
+                        className={classes.inputSpace}
+                        helperText="Physician's CRM"
+                        id="PhysicianCRM"
+                        label="Physician CRM*: "
+                        variant="outlined" 
+                        {...field}/>}
+                        />
                 </Grid>
                 <Typography variant="h6" className={classes.typographSpace}>Healthcare Institution: </Typography>
+                <Controller
+                    name="healthcareInstitutionId"
+                    control={control}
+                    render={({field}) =>
                 <TextField
                     className={classes.inputSpace}
                     select
                     type="select"
                     helperText="Institution"
                     id="healthcareInstitution"
-                    name="healthcareInstitutionId"
                     label="Institution*: "
                     variant="outlined"
-                    value={institutionValue}
-                    onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                        const selectValue = event.target.value
-                        setInstitutionValue(selectValue as string);
-                    }}>
+                    {...field}>
                     <MenuItem value={''}><em>...</em></MenuItem>
                     {institutions.map((institution, index) => {
                         return (
-                            <MenuItem key={index} value={institution.name}>{institution.name}</MenuItem>
+                            <MenuItem key={index} value={index}>{institution.name}</MenuItem>
                         )
                     })}
-                </TextField>
+                </TextField>}
+                />
                 <Box width="100%" className={classes.div}>
-                    <Button>Save</Button>
+                    <Button type="submit">Save</Button>
                     <Button>Cancel</Button>
-                </Box>  
+                </Box>
             </Box>
         </form >
     );
