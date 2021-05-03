@@ -1,6 +1,7 @@
 import { FormControl, Grid, Theme, makeStyles, TextField, createStyles, Button, Box } from "@material-ui/core";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup'
+import { HealthcareInstitutionSchema } from "../../services/validation/YupSchemas";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     inputSpace: {
@@ -23,7 +24,9 @@ const inicialValues = {
 export default function NewInstitutionForm() {
 
     const { control, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: inicialValues
+        defaultValues: inicialValues,
+        resolver: yupResolver(HealthcareInstitutionSchema)
+
     });
     const classes = useStyles();
 
@@ -37,8 +40,9 @@ export default function NewInstitutionForm() {
                         name="name"
                         control={control}
                         render={({ field }) => <TextField
+                            error={errors.name? true : false}
                             className={classes.inputSpace}
-                            helperText="Institution's name"
+                            helperText={errors.name?.message}
                             id="institutionName"
                             label="Name*: "
                             variant="outlined"
@@ -49,8 +53,9 @@ export default function NewInstitutionForm() {
                         control={control}
                         render={({ field }) =>
                             <TextField
+                                error={errors.cnpj? true : false}
+                                helperText={errors.cnpj?.message}
                                 className={classes.inputSpace}
-                                helperText="Institution's cnpj"
                                 id="institutionCnpj"
                                 label="CNPJ*: "
                                 variant="outlined"
