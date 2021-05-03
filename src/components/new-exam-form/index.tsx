@@ -1,6 +1,8 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, createStyles, Grid, makeStyles, MenuItem, TextField, Theme, Typography } from "@material-ui/core";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { ExamSchema } from "../../services/validation/YupSchemas";
 
 const institutions = [
     { name: 'Hemocentro', cnpj: '123456' },
@@ -39,7 +41,8 @@ const inicialValues = {
 export default function NewExamForm() {
 
     const { control, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: inicialValues
+        defaultValues: inicialValues,
+        resolver: yupResolver(ExamSchema)
     });
     const [institutionValue, setInstitutionValue] = React.useState('');
     const classes = useStyles();
@@ -52,8 +55,9 @@ export default function NewExamForm() {
                     name="procedureName"
                     control={control}
                     render={({field}) => <TextField
+                        error={errors.procedureName? true : false}
                         className={classes.inputSpace}
-                        helperText="Procedure name"
+                        helperText={errors.procedureName?.message}
                         id="ProcedureName"
                         label="Procedure Name*: "
                         variant="outlined"
@@ -67,8 +71,9 @@ export default function NewExamForm() {
                         control={control}
                     render={({field}) =>
                     <TextField
+                    error={errors.patientName? true : false}
                         className={classes.inputSpace}
-                        helperText="Patient's name"
+                        helperText={errors.patientName?.message}
                         id="PatientName"
                         label="Name*: "
                         variant="outlined" 
@@ -80,8 +85,9 @@ export default function NewExamForm() {
                         control={control}
                     render={({field}) =>
                     <TextField
+                    error={errors.patientAge? true : false}
                         className={classes.inputSpace}
-                        helperText="Patient's age"
+                        helperText={errors.patientAge?.message}
                         id="PatientAge"
                         label="Age*: "
                         variant="outlined" 
@@ -92,10 +98,11 @@ export default function NewExamForm() {
                         control={control}
                     render={({field}) =>
                     <TextField
+                    error={errors.patientGender? true : false}
                         className={classes.inputSpace}
                         select
                         type="select"
-                        helperText="Patient's Gender"
+                        helperText={errors.patientGender?.message}
                         id="PatientGender"
                         label="Gender*: "
                         variant="outlined"
@@ -113,8 +120,9 @@ export default function NewExamForm() {
                         control={control}
                     render={({field}) =>
                     <TextField
+                    error={errors.physicianName? true : false}
                         className={classes.inputSpace}
-                        helperText="Physician's name"
+                        helperText={errors.physicianName?.message}
                         id="PhysicianName"
                         label="Physician Name*: "
                         variant="outlined" 
@@ -125,8 +133,9 @@ export default function NewExamForm() {
                         control={control}
                     render={({field}) =>
                     <TextField
+                    error={errors.physicianCRM? true : false}
                         className={classes.inputSpace}
-                        helperText="Physician's CRM"
+                        helperText={errors.physicianCRM?.message}
                         id="PhysicianCRM"
                         label="Physician CRM*: "
                         variant="outlined" 
@@ -139,10 +148,11 @@ export default function NewExamForm() {
                     control={control}
                     render={({field}) =>
                 <TextField
+                error={errors.healthcareInstitutionId? true : false}
                     className={classes.inputSpace}
                     select
                     type="select"
-                    helperText="Institution"
+                    helperText={errors.healthcareInstitutionId?.message}
                     id="healthcareInstitution"
                     label="Institution*: "
                     variant="outlined"

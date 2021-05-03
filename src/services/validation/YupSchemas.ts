@@ -10,8 +10,8 @@ export const ExamSchema = Yup.object().shape({
     procedureName: Yup.string().required("Procedure name is required!").min(3, 'At least 3 characters is required!').max(100, 'Maximum of 100 characters'),
     patientName: Yup.string().required("Patient's name is required!").min(3, 'At least 3 characters is required!').max(100, 'Maximum of 100 characters'),
     patientAge: Yup.number().required("Patient's age is required"),
-    patientGender: Yup.number().required("Patient's gender is required"),
+    patientGender: Yup.string().required("Patient's gender is required"),
     physicianName: Yup.string().required("Physician's name is required!").min(3, 'At least 3 characters is required!').max(100, 'Maximum of 100 characters'),
     physicianCRM: Yup.string().required("Physician's CRM is required!"),
-    healthcareInstitutionId: Yup.number().required("Healthcare Institution is Required")
+    healthcareInstitutionId: Yup.string().required("Healthcare Institution is Required")
 })
