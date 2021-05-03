@@ -1,5 +1,6 @@
 import { Button, Card, createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, Typography, Theme, Grid, Box, Divider } from "@material-ui/core";
 import React, { Dispatch, SetStateAction } from "react";
+import NewInstitutionForm from "../new-institution-form";
 
 const institutions = [
     { name: 'Hemocentro', cnpj: '123456' },
@@ -44,7 +45,7 @@ export default function InstitutionCard(props: CardProps) {
     return (
         <>
         <Grid container spacing={3} className={classes.root}>
-        <Grid xs={12} sm={6} container alignItems="center">          
+        <Grid item xs={12} sm={6} container alignItems="center">          
         <Box>
             <Typography>
                 Select a Healthcare Institution:
@@ -76,7 +77,7 @@ export default function InstitutionCard(props: CardProps) {
 
             </Grid>
         {isInstitutionEmpty !== '' ? 
-        <Grid xs={12} sm={6} container direction="row" alignItems="center" spacing={1}>
+        <Grid item xs={12} sm={6} container direction="row" alignItems="center" spacing={1}>
             <Grid container direction="column" item xs={12} sm={6}>
                 <Typography variant="h5">
                     Institution: <span>Sabin</span>
@@ -93,7 +94,7 @@ export default function InstitutionCard(props: CardProps) {
         </Grid> : <></>
     }
         </Grid>
-        {openForm? <div>Oi do form</div> : <></>}
+        {openForm? <NewInstitutionForm /> : <></>}
         <Divider className={classes.root}/>
         </>
     )
