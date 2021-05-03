@@ -1,8 +1,23 @@
-import { Container, Divider, Grid } from '@material-ui/core'
-import {useStyles} from '../header/index'
+import { Container, createStyles, Divider, Grid, makeStyles, Theme } from '@material-ui/core'
 import { ExamsTable } from '../table';
 import InstitutionCard from '../insitution-card';
 import React from 'react';
+
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    content: {
+      padding: theme.spacing(3),
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      marginTop: 80
+    },
+    InstitutionCard: {
+        marginBottom: theme.spacing(3, 0)
+    }
+  })
+);
 
 export default function Content() {
     const[institutionValue, setInstitutionValue] = React.useState('');
@@ -12,7 +27,6 @@ export default function Content() {
         
         <Container className={classes.content}>
         <InstitutionCard setInstitution={setInstitutionValue}/>
-        <Divider />
         <Grid>
         {institutionValue !== '' ? <ExamsTable/> : <div>ops</div>}
         </Grid>
