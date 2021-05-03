@@ -1,5 +1,6 @@
 import { Button, Card, createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, Typography, Theme, Grid, Box, Divider } from "@material-ui/core";
 import React, { Dispatch, SetStateAction } from "react";
+import { GetAll } from "../../services/axios/api";
 import NewInstitutionForm from "../new-institution-form";
 
 const institutions = [
@@ -29,6 +30,13 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 })
 );
 
+type HealthcareInstitution = {
+    id: number,
+    name: string,
+    cnpj: string,
+    pixeonCoins: number
+}
+
 type CardProps = {
     setInstitution: Dispatch<SetStateAction<string>>
 }
@@ -36,7 +44,13 @@ type CardProps = {
 export default function InstitutionCard(props: CardProps) {
     const [isInstitutionEmpty, setInstitutionEmpty] = React.useState('');
     const [openForm, setOpenForm] = React.useState(false);
+    const {data} = GetAll<HealthcareInstitution[]>('healthcareinstitutions');
+    const {data: singledata} = GetAll<HealthcareInstitution>(`healthcareinstitutions/${isInstitutionEmpty}`)
     const classes = useStyles();
+
+    if(!data || !singledata) {
+        return(<></>);
+    }
 
     const handleOpenForm = () => {
         setOpenForm(!openForm);
@@ -45,7 +59,7 @@ export default function InstitutionCard(props: CardProps) {
     return (
         <>
         <Grid container spacing={3} className={classes.root}>
-        <Grid item xs={12} sm={6} container alignItems="center">          
+        <Grid item xs={12} sm={5} container alignItems="center">          
         <Box>
             <Typography>
                 Select a Healthcare Institution:
@@ -56,11 +70,12 @@ export default function InstitutionCard(props: CardProps) {
                     const selectValue = event.target.value
                     setInstitutionEmpty(selectValue as string);
                     props.setInstitution(selectValue as string);
+
                 }}>
                     <MenuItem value={''}><em>...</em></MenuItem>
-                    {institutions.map((institution, index) => {
+                    {data.map((institution, index) => {
                         return (
-                            <MenuItem key={index} value={institution.name}>{institution.name}</MenuItem>
+                            <MenuItem key={index} value={institution.id}>{institution.name}</MenuItem>
                             )
                         })}
                 </Select>
@@ -77,18 +92,18 @@ export default function InstitutionCard(props: CardProps) {
 
             </Grid>
         {isInstitutionEmpty !== '' ? 
-        <Grid item xs={12} sm={6} container direction="row" alignItems="center" spacing={1}>
+        <Grid item xs={12} sm={7} container direction="row" alignItems="center" spacing={1}>
             <Grid container direction="column" item xs={12} sm={6}>
                 <Typography variant="h5">
-                    Institution: <span>Sabin</span>
+                    Institution: <span>{singledata.name}</span>
                 </Typography>
                 <Typography>
-                    CNPJ: <span>2389109381</span>
+                    CNPJ: <span>{singledata.cnpj}</span>
                 </Typography>
             </Grid>
             <Grid container direction="row" item xs={12} sm={6}>
                 <Typography>
-                    Pixeon Coins: <span>20</span>
+                    Pixeon Coins: <span>{singledata.pixeonCoins}</span>
                 </Typography>
             </Grid>
         </Grid> : <></>
