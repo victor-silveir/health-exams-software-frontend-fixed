@@ -17,20 +17,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { Card, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
-import { AutoComplete } from 'material-ui';
 
 const drawerWidth = 240;
-
-const institutions = [
-  {name: 'Hemocentro', cnpj: '123456'},
-  {name: 'Sabin', cnpj: '123456'},
-  {name: 'Laboratórios Exame', cnpj: '123456'},
-  {name: 'Laboratório Maria do Carmo', cnpj: '123456'},
-  {name: 'Lab 1', cnpj: '123456'},
-
-
-]
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -119,7 +107,7 @@ export default function PersistentDrawerLeft() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Persistent drawer
+            Health Exams' Software
           </Typography>
         </Toolbar>
       </AppBar>

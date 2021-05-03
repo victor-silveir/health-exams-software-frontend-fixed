@@ -2,6 +2,7 @@ import { FormControl, Grid, Theme, makeStyles, TextField, createStyles, Button, 
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup'
 import { HealthcareInstitutionSchema } from "../../services/validation/YupSchemas";
+import { api } from "../../services/axios/api";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     inputSpace: {
@@ -32,7 +33,11 @@ export default function NewInstitutionForm() {
 
     return (
         <form onSubmit={handleSubmit((values) => {
-            console.log(values)
+            api.post('healthcareinstitutions', {data: values}).then(() => {
+                alert("Congratulations! The Healthcare Institution was saved")
+            }).catch(() => {
+                alert("Oops! Something went wrong, try again later!")
+            })
         })}>
             <Box width="100%" className={classes.div}>
                 <Grid container>
@@ -64,8 +69,7 @@ export default function NewInstitutionForm() {
                 </Grid>
             </Box>
             <Box width="100%" className={classes.div}>
-                <Button type="submit">Save</Button>
-                <Button>Cancel</Button>
+                <Button variant="contained" color="primary" size="large" type="submit">Save</Button>
             </Box>
         </form>
     );

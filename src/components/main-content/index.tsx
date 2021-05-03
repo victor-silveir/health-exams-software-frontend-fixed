@@ -1,4 +1,4 @@
-import { Container, createStyles, Divider, Grid, makeStyles, Theme } from '@material-ui/core'
+import { Button, Container, createStyles, Divider, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
 import { ExamsTable } from '../table';
 import InstitutionCard from '../insitution-card';
 import React, { useEffect } from 'react';
@@ -16,7 +16,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginTop: 80
     },
     InstitutionCard: {
-        marginBottom: theme.spacing(3, 0)
+        margin: theme.spacing(3, 0)
+    },
+    typography: {
+      textAlign: 'center'
     }
   })
 );
@@ -30,31 +33,54 @@ type HealthcareInstitution = {
 
 export default function Content() {
     const[institutionValue, setInstitutionValue] = React.useState('');
+    const[institutionsValues, setInstitutionsValues] = React.useState<HealthcareInstitution[]>([]);
     const[singleData, setSingleData] = React.useState({} as HealthcareInstitution);
+    const[openForm, setOpenForm] = React.useState(false);
+    
+    React.useEffect(() => {
+      api.get('healthcareinstitutions').then((response) => {
+          setInstitutionsValues(response.data);
+      });
+  }, []);
+
+    const handleOpenForm = () => {
+      setOpenForm(true);
+    }
+
+    const handleCloseForm = () => {
+      setOpenForm(false);
+    }
     
     const classes = useStyles();
 
     useEffect(() => {
-      api.get(`healthcareinstitutions/${institutionValue}`).then((response) => {
-        setSingleData(response.data)
-      });
-    }, [institutionValue])
+      if(institutionValue !== '') {
+        api.get(`healthcareinstitutions/${institutionValue}`).then((response) => {
+          setSingleData(response.data)
+          console.log(singleData)
+        });
+      }
+      }, [institutionValue])
 
 
     if(!singleData) {
       return(
-        <InstitutionCard setInstitution={setInstitutionValue}/> 
+        <InstitutionCard setInstitution={setInstitutionValue} institutions={institutionsValues}/> 
       );
     }
 
     return(
         
         <Container className={classes.content}>
-        <InstitutionCard setInstitution={setInstitutionValue}/>
+        <InstitutionCard setInstitution={setInstitutionValue} institutions={institutionsValues}/>
         <Grid>
-        {institutionValue !== '' ? <ExamsTable healthcareInstitutions={singleData}/> : <div>ops</div>}
+        {institutionValue !== '' ? <><ExamsTable healthcareInstitutions={singleData}/>
+        <Button variant="contained" color="primary" className={classes.InstitutionCard} onClick={handleOpenForm}>New Exam</Button>
+        </> : <Typography variant="h4" className={classes.typography}>Welcome to exams software! try to request or create new exams just selecting one Institution!</Typography>}
         </Grid>
-        <NewExamForm />
+        <Grid>
+        {openForm? <NewExamForm closeForm={handleCloseForm} institutions={institutionsValues}/> : null}
+        </Grid>
         </Container>
     ) 
 };

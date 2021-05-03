@@ -1,7 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, createStyles, Grid, makeStyles, MenuItem, TextField, Theme, Typography } from "@material-ui/core";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { api } from "../../services/axios/api";
 import { ExamSchema } from "../../services/validation/YupSchemas";
 
 const institutions = [
@@ -11,6 +12,12 @@ const institutions = [
     { name: 'Laboratório Maria do Carmo', cnpj: '123456' },
     { name: 'Lab 1', cnpj: '123456' },
 ]
+type HealthcareInstitution = {
+    id: number,
+    name: string,
+    cnpj: string,
+    pixeonCoins: number
+  }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     inputSpace: {
@@ -38,17 +45,27 @@ const inicialValues = {
     healthcareInstitutionId: ''
 }
 
-export default function NewExamForm() {
+type NewExamProps = {
+    closeForm: Dispatch<SetStateAction<string>>,
+    institutions: HealthcareInstitution[]
+}
+
+export default function NewExamForm(props: NewExamProps) {
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: inicialValues,
         resolver: yupResolver(ExamSchema)
     });
-    const [institutionValue, setInstitutionValue] = React.useState('');
     const classes = useStyles();
 
     return (
-        <form onSubmit={handleSubmit((values) => console.log(values))}>
+        <form onSubmit={handleSubmit((values) => {console.log(values)
+            api.post(`exams`, {data: values}).then(() => {
+            alert('Congratulations! New Exam was saved!')
+            window.location.reload(false);
+        }).catch(() => {
+            alert('Oops, something went wrong, try again later!')
+        })})}>
             <Box width="100%">
                 <Typography variant="h6" className={classes.typographSpace}>Procedure Name:</Typography>
                 <Controller
@@ -107,9 +124,9 @@ export default function NewExamForm() {
                         label="Gender*: "
                         variant="outlined"
                         {...field}>
-                        <MenuItem value={0}><em>...</em></MenuItem>
-                        <MenuItem value={1}>Male</MenuItem>
-                        <MenuItem value={2}>Female</MenuItem>
+                        <MenuItem value={-1}><em>...</em></MenuItem>
+                        <MenuItem value={0}>Male</MenuItem>
+                        <MenuItem value={1}>Female</MenuItem>
                     </TextField>}
                     />
                 </Grid>
@@ -158,16 +175,16 @@ export default function NewExamForm() {
                     variant="outlined"
                     {...field}>
                     <MenuItem value={''}><em>...</em></MenuItem>
-                    {institutions.map((institution, index) => {
+                    {props.institutions.map((institution, index) => {
                         return (
-                            <MenuItem key={index} value={index}>{institution.name}</MenuItem>
+                            <MenuItem key={index} value={institution.id}>{institution.name}</MenuItem>
                         )
                     })}
                 </TextField>}
                 />
                 <Box width="100%" className={classes.div}>
                     <Button type="submit">Save</Button>
-                    <Button>Cancel</Button>
+                    <Button onClick={() => props.closeForm}>Cancel</Button>
                 </Box>
             </Box>
         </form >

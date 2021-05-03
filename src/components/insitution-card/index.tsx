@@ -3,14 +3,6 @@ import React, { Dispatch, SetStateAction } from "react";
 import { api, GetAll } from "../../services/axios/api";
 import NewInstitutionForm from "../new-institution-form";
 
-const institutions = [
-    { name: 'Hemocentro', cnpj: '123456' },
-    { name: 'Sabin', cnpj: '123456' },
-    { name: 'Laboratórios Exame', cnpj: '123456' },
-    { name: 'Laboratório Maria do Carmo', cnpj: '123456' },
-    { name: 'Lab 1', cnpj: '123456' },
-]
-
 const useStyles = makeStyles((theme: Theme) => createStyles({
     root: {
         margin: theme.spacing(2, 0)
@@ -23,7 +15,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         width: 200,
     },
     institutionButton: {
-        backgroundColor: 'red',
         margin: theme.spacing(2, 0)
     },
 
@@ -31,30 +22,31 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 );
 
 type HealthcareInstitution = {
-    id: number,
+    id?: number,
     name: string,
     cnpj: string,
-    pixeonCoins: number
+    pixeonCoins?: number
 }
 
 type CardProps = {
-    setInstitution: Dispatch<SetStateAction<string>>
+    setInstitution: Dispatch<SetStateAction<string>>,
+    institutions: HealthcareInstitution[]
 }
 
 export default function InstitutionCard(props: CardProps) {
     const [isInstitutionEmpty, setInstitutionEmpty] = React.useState('');
     const [data, setData] = React.useState<HealthcareInstitution[]>([]);
     const [singleData, setSingleData] = React.useState<HealthcareInstitution>({} as HealthcareInstitution)
-    api.get('healthcareinstitutions').then((response) => {
-        setData(response.data);
-    });
 
     React.useEffect(() => {
+        setData(props.institutions);
+    });
+    
+    if (isInstitutionEmpty !== '') {
         api.get(`healthcareinstitutions/${isInstitutionEmpty}`).then((response) => {
             setSingleData(response.data);
         });
-    }, [isInstitutionEmpty]);
-
+    }
     const [openForm, setOpenForm] = React.useState(false);
     
     const classes = useStyles();
@@ -98,7 +90,7 @@ export default function InstitutionCard(props: CardProps) {
             <Typography variant="h6">
                 Or Create a new institution!
             </Typography>
-            <Button variant="contained" className={classes.institutionButton} onClick={handleOpenForm}>
+            <Button variant="contained" color="primary" className={classes.institutionButton} onClick={handleOpenForm}>
                 <Typography variant="button">
                     New Institution
                 </Typography>
