@@ -1,4 +1,4 @@
-import { Button, Card, createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, Typography, Theme, Grid, Box } from "@material-ui/core";
+import { Button, Card, createStyles, FormControl, InputLabel, makeStyles, MenuItem, Select, Typography, Theme, Grid, Box, Divider } from "@material-ui/core";
 import React, { Dispatch, SetStateAction } from "react";
 
 const institutions = [
@@ -34,11 +34,16 @@ type CardProps = {
 
 export default function InstitutionCard(props: CardProps) {
     const [isInstitutionEmpty, setInstitutionEmpty] = React.useState('');
+    const [openForm, setOpenForm] = React.useState(false);
     const classes = useStyles();
 
-    return (
-        <Grid container spacing={3} className={classes.root}>
+    const handleOpenForm = () => {
+        setOpenForm(!openForm);
+    }
 
+    return (
+        <>
+        <Grid container spacing={3} className={classes.root}>
         <Grid xs={12} sm={6} container alignItems="center">          
         <Box>
             <Typography>
@@ -62,7 +67,7 @@ export default function InstitutionCard(props: CardProps) {
             <Typography variant="h6">
                 Or Create a new institution!
             </Typography>
-            <Button variant="contained" className={classes.institutionButton}>
+            <Button variant="contained" className={classes.institutionButton} onClick={handleOpenForm}>
                 <Typography variant="button">
                     New Institution
                 </Typography>
@@ -88,5 +93,8 @@ export default function InstitutionCard(props: CardProps) {
         </Grid> : <></>
     }
         </Grid>
+        {openForm? <div>Oi do form</div> : <></>}
+        <Divider className={classes.root}/>
+        </>
     )
 }
