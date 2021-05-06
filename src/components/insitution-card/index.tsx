@@ -29,35 +29,23 @@ type HealthcareInstitution = {
 }
 
 type CardProps = {
-    setInstitution: Dispatch<SetStateAction<string>>,
+    setInstitutionValue: Dispatch<SetStateAction<number>>,
+    setInstitution: Dispatch<SetStateAction<any>>,
     institutions: HealthcareInstitution[]
 }
 
 export default function InstitutionCard(props: CardProps) {
-    const [isInstitutionEmpty, setInstitutionEmpty] = React.useState('');
     const [data, setData] = React.useState<HealthcareInstitution[]>([]);
     const [singleData, setSingleData] = React.useState<HealthcareInstitution>({} as HealthcareInstitution)
-
+    const [isInstitutionEmpty, updateInstitutionValue] = React.useState(0);
+    
     React.useEffect(() => {
         setData(props.institutions);
     });
     
-    if (isInstitutionEmpty !== '') {
-        api.get(`healthcareinstitutions/${isInstitutionEmpty}`).then((response) => {
-            setSingleData(response.data);
-        });
-    }
     const [openForm, setOpenForm] = React.useState(false);
     
     const classes = useStyles();
-
-    if(!data ) {
-        return(<></>);
-    }
-
-    if(!singleData) {
-        return(<></>)
-    }
 
     const handleOpenForm = () => {
         setOpenForm(!openForm);
@@ -75,11 +63,14 @@ export default function InstitutionCard(props: CardProps) {
                 <InputLabel id="institution">Institution</InputLabel>
                 <Select id="institution" className={classes.institutionSelect} value={isInstitutionEmpty} label="Institution" onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                     const selectValue = event.target.value
-                    props.setInstitution(selectValue as string);
-                    setInstitutionEmpty(selectValue as string);
-
+                    props.setInstitutionValue(selectValue as number);
+                    updateInstitutionValue(selectValue as number);
+                    api.get(`healthcareinstitutions/${selectValue}`).then((response) => {
+                        setSingleData(response.data);
+                        props.setInstitution(response.data);
+                    })
                 }}>
-                    <MenuItem value={''}><em>...</em></MenuItem>
+                    <MenuItem value={0}><em>...</em></MenuItem>
                     {data.map((institution, index) => {
                         return (
                             <MenuItem key={index} value={institution.id}>{institution.name}</MenuItem>
@@ -98,7 +89,7 @@ export default function InstitutionCard(props: CardProps) {
         </Box>
 
             </Grid>
-        {isInstitutionEmpty !== '' ? 
+        {isInstitutionEmpty? 
         <Grid item xs={12} sm={7} container direction="row" alignItems="center" spacing={1}>
             <Grid container direction="column" item xs={12} sm={6}>
                 <Typography variant="h5">

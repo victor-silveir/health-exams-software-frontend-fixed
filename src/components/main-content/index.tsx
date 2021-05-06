@@ -32,7 +32,7 @@ type HealthcareInstitution = {
 }
 
 export default function Content() {
-    const[institutionValue, setInstitutionValue] = React.useState('');
+    const[institutionValue, setInstitutionValue] = React.useState(0);
     const[institutionsValues, setInstitutionsValues] = React.useState<HealthcareInstitution[]>([]);
     const[singleData, setSingleData] = React.useState({} as HealthcareInstitution);
     const[openForm, setOpenForm] = React.useState(false);
@@ -41,6 +41,7 @@ export default function Content() {
       api.get('healthcareinstitutions').then((response) => {
           setInstitutionsValues(response.data);
       });
+      
   }, []);
 
     const handleOpenForm = () => {
@@ -53,28 +54,18 @@ export default function Content() {
     
     const classes = useStyles();
 
-    useEffect(() => {
-      if(institutionValue !== '') {
-        api.get(`healthcareinstitutions/${institutionValue}`).then((response) => {
-          setSingleData(response.data)
-          console.log(singleData)
-        });
-      }
-      }, [institutionValue])
-
-
     if(!singleData) {
       return(
-        <InstitutionCard setInstitution={setInstitutionValue} institutions={institutionsValues}/> 
+        <InstitutionCard setInstitutionValue={setInstitutionValue} setInstitution={setSingleData} institutions={institutionsValues}/> 
       );
     }
 
     return(
         
         <Container className={classes.content}>
-        <InstitutionCard setInstitution={setInstitutionValue} institutions={institutionsValues}/>
+        <InstitutionCard setInstitutionValue={setInstitutionValue} setInstitution={setSingleData} institutions={institutionsValues}/>
         <Grid>
-        {institutionValue !== '' ? <><ExamsTable healthcareInstitutions={singleData}/>
+        {institutionValue? <><ExamsTable healthcareInstitutions={singleData}/>
         <Button variant="contained" color="primary" className={classes.InstitutionCard} onClick={handleOpenForm}>New Exam</Button>
         </> : <Typography variant="h4" className={classes.typography}>Welcome to exams software! try to request or create new exams just selecting one Institution!</Typography>}
         </Grid>

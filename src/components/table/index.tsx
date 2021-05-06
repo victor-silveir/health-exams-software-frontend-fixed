@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Button, Collapse, createStyles, Divider, Grid, makeStyles, Modal, TableCell, TableContainer, TableHead, Theme, Typography } from "@material-ui/core";
 import { IconButton, Paper, Table, TableBody, TableRow } from "@material-ui/core";
 import { useState } from "react";
@@ -224,10 +224,15 @@ type TableProps = {
 export function ExamsTable(props: TableProps) {
 
   const [data, setData] = React.useState<GetExamdataType[]>([]);
+  console.log(props.healthcareInstitutions.id)
 
-  api.get(`exams/institutionid/${props.healthcareInstitutions.id}`).then((response) => {
+
+React.useEffect(() => {
+  
+    api.get(`exams/institutionid/${props.healthcareInstitutions.id}`).then((response) => {
     setData(response.data);
   })
+}, [])
 
   return (
     <TableContainer component={Paper}>
